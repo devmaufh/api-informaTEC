@@ -4,6 +4,7 @@ from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_r
 
 parser = reqparse.RequestParser()
 
+parser.add_argument('id', help = 'No puedes dejar el id vacio', required = False)
 parser.add_argument('username', help = 'No puedes dejar el email vacio', required = True)
 parser.add_argument('password', help = 'Te falta el pass crack', required = True)
 parser.add_argument('nombre', help = 'nombre missing', required = False)
@@ -37,9 +38,6 @@ class UserRegistration(Resource):
         except:
             return {'message': 'Something went wrong'}, 500
 
-    
-
-
 class UserLogin(Resource):
     def post(self):
         data = parser.parse_args()
@@ -57,7 +55,25 @@ class UserLogin(Resource):
 
         else:
             return { 'message': 'Wrong credentials' }
-      
+
+class UserUpdate(Resource):
+    #@jwt_required #Uncomment this line to disable JSON WEB TOKEN Auth.
+    def post(self):
+        data = parser.parse_args()
+        current = UserModel.find_by_username(data['username'])
+        if (not current):
+            return {'message': 'User doesnt exists'}
+        try:
+            current.telefono = data['telefono']
+            current.id_tipo = data['id_tipo']
+            current.password = UserModel.generate_hash(data['password'])
+            current.nombre = data['nombre']
+            current.save_to_db()            
+            return {'message': 'user updated'}
+        except:
+            return {'message': 'Cannot update user'}, 500
+        
+
       
 class UserLogoutAccess(Resource):
     def post(self):

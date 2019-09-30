@@ -3,10 +3,17 @@ from passlib.hash import pbkdf2_sha256 as sha256
 
 
 
-class TipoUser(db.Model):
+class TipoUserModel(db.Model):
     __tablename__ = 'tipo_users'
     id       =  db.Column(db.Integer, primary_key = True)
     tipo     =  db.Column(db.String(50),nullable = False) 
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+    @classmethod
+    def find_type_by_id(cls, id):
+        return cls.query.filter_by(id = id).first()
 
 class UserModel(db.Model):
     __tablename__ = 'users'
@@ -21,7 +28,8 @@ class UserModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
-    
+
+ 
 
     @classmethod
     def find_by_username(cls,username):

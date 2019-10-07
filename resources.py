@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from models import UserModel
-from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from flask_jwt_extended import (jwt_manager,create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
 parser = reqparse.RequestParser()
 class UserRegistration(Resource):
@@ -39,9 +39,22 @@ class UserLogin(Resource):
         current_user =  UserModel.find_by_username(data['usrId'])
         if (not current_user):
             return {'message': 'Wrong credentials'}
-        if (UserModel.verify_hash(data['pwd'],current_user.pwd)):
-            access_token = create_access_token(identity=data['usrId'])
-            refresh_token = create_refresh_token(identity = data['usrId'])
+        if (current_user.verify_hash(data['pwd'],current_user.pwd)):
+            current_user.noTel = data['noTel']
+            current_user.correo = data['correo']
+            current_user.save_to_db()
+            jsonUser = {
+                'usrId': current_user.usrId,
+                'nomUsr': current_user.nomUsr,
+                'noTel': current_user.noTel,
+                'correo': current_user.correo,
+                'rfcTutor': current_user.rfcTutor,
+                'fechaAlta': current_user.fechaAlta,
+                'idTipoUsr': current_user.idTipoUsr
+            }
+            access_token = create_access_token(identity=jsonUser)
+            #access_token = create_access_token(identity=data['usrId'])
+            refresh_token = create_refresh_token(identity = jsonUser)
             return {
                  'message':'logged in as {} '.format(current_user.usrId),
                  'access_token': access_token,

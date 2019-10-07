@@ -8,7 +8,7 @@ class Insert(Resource):
         parser.add_argument('tipo',help='tipo missing', required=True)
         data = parser.parse_args()
         new_tipo = TipoUserModel(
-            tipo=data['tipo']
+            nomTipoUsr=data['tipo']
         )
         try:
             new_tipo.save_to_db()
@@ -17,7 +17,6 @@ class Insert(Resource):
             }
         except:
             return {'message' : 'Something went wrong'}, 500
-
 class Update(Resource):
     def post(self):
         parser.add_argument('id',help='id missing', required=True)
@@ -27,7 +26,7 @@ class Update(Resource):
         if( not current_type ):
             { 'message': 'User type doesnt exists' }
         try:
-            current_type.tipo = data['tipo']
+            current_type.nomTipoUsr = data['tipo']
             current_type.save_to_db()
             return { 'message': 'User type updated' }
         except:

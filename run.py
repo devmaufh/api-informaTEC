@@ -9,7 +9,7 @@ api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/avisos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'advices'
-app.config['JWT_SECRET_KEY'] = 'otro_token'
+app.config['JWT_SECRET_KEY'] = 'tok_avisos_merife'
 
 jwt = JWTManager(app)
 

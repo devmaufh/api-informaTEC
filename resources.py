@@ -3,18 +3,9 @@ from models import UserModel
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
 parser = reqparse.RequestParser()
-
-parser.add_argument('id', help = 'No puedes dejar el id vacio', required = False)
-parser.add_argument('username', help = 'No puedes dejar el email vacio', required = True)
-parser.add_argument('password', help = 'Te falta el pass crack', required = True)
-parser.add_argument('nombre', help = 'nombre missing', required = False)
-parser.add_argument('telefono', help = 'Telefono missing', required = False)
-parser.add_argument('id_tipo', help = 'id_tipo missing', required = False)
-
 class UserRegistration(Resource):
     def post(self):
         data = parser.parse_args()
-
         if (UserModel.find_by_username(data['username'])):
             return {'message': 'User {} already exists'.format(data['username'])}
 
@@ -36,26 +27,30 @@ class UserRegistration(Resource):
                 'refresh_token': refresh_token
             }
         except:
-            return {'message': 'Something went wrong'}, 500
+            return {'message': 'Algo salio mal ):'}, 500
 
 class UserLogin(Resource):
-    def post(self):
+     def post(self):
+        parser.add_argument('usrId',help='usrId missing', required=True)
+        parser.add_argument('pwd',help='pwd missing', required=True)
+        parser.add_argument('noTel',help='noTel missing', required=True)
+        parser.add_argument('correo',help='correo missing', required=True)
         data = parser.parse_args()
-        current_user = UserModel.find_by_username(data['username'])
+        current_user =  UserModel.find_by_username(data['usrId'])
         if (not current_user):
             return {'message': 'Wrong credentials'}
-        if (UserModel.verify_hash(data['password'],current_user.password)):
-            access_token = create_access_token(identity=data['username'])
-            refresh_token = create_refresh_token(identity = data['username'])
+        if (UserModel.verify_hash(data['pwd'],current_user.pwd)):
+            access_token = create_access_token(identity=data['usrId'])
+            refresh_token = create_refresh_token(identity = data['usrId'])
             return {
-                 'message':'logged in as {} '.format(current_user.username),
+                 'message':'logged in as {} '.format(current_user.usrId),
                  'access_token': access_token,
                  'refresh_token': refresh_token
             }
 
         else:
             return { 'message': 'Wrong credentials' }
-
+    
 class UserUpdate(Resource):
     #@jwt_required #Uncomment this line to disable JSON WEB TOKEN Auth.
     def post(self):

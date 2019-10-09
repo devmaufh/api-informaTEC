@@ -5,6 +5,8 @@ from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 api = Api(app)
+app.config['UPLOAD_FOLDER'] = 'images'
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/avisos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -31,6 +33,9 @@ from controllers import tipouser_controller as UserTypeController
 # TipoUser Endpoints
 api.add_resource(UserTypeController.Insert, '/tipoUser/insert')
 api.add_resource(UserTypeController.Update, '/tipoUser/update')
+
+from controllers import avisos_controller as AvisosController
+api.add_resource(AvisosController.InsertAviso, '/avisos/insert')
 
 @app.before_first_request
 def create_tables():

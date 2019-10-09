@@ -53,5 +53,9 @@ class AvisoModel(db.Model):
     fechaAlta = db.Column(db.Date, nullable = False)
     estado = db.Column(db.Integer, nullable = False)
     imagen = db.Column(db.String(255), nullable = True)
-     
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+    
 

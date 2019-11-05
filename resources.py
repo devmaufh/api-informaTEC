@@ -29,6 +29,16 @@ class UserRegistration(Resource):
         except:
             return {'message': 'Algo salio mal ):'}, 500
 
+
+
+class CheckUser(Resource):
+    def post(self):
+        parser.add_argument('usrId',help='usrId missing', required=True)
+        data = parser.parse_args()
+        if(not UserModel.find_by_username(data['usrId'])):
+            return {'message': 'No existe el usuario', 'status': False}
+        else:
+            return {'status': True, 'message': 'si existe'}
 class UserLogin(Resource):
      def post(self):
         parser.add_argument('usrId',help='usrId missing', required=True)

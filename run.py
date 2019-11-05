@@ -28,6 +28,8 @@ api.add_resource(resources.TokenRefresh, '/token/refresh')
 api.add_resource(resources.AllUsers, '/users')
 api.add_resource(resources.SecretResource, '/secret')
 api.add_resource(resources.UserUpdate,'/users/update')
+api.add_resource(resources.CheckUser,'/users/verify')
+
 
 from controllers import tipouser_controller as UserTypeController
 # TipoUser Endpoints
@@ -36,6 +38,7 @@ api.add_resource(UserTypeController.Update, '/tipoUser/update')
 
 from controllers import avisos_controller as AvisosController
 api.add_resource(AvisosController.InsertAviso, '/avisos/insert')
+api.add_resource(AvisosController.AllAvisos,'/avisos')
 
 @app.before_first_request
 def create_tables():

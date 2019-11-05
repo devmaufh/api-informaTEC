@@ -57,5 +57,20 @@ class AvisoModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+
+    @classmethod
+    def return_all(cls):
+        def to_json(x):
+            return {
+                'idAviso': x.idAviso,
+                'img': x.imagen,
+                'usrId': x.usrId,
+                'titulo':x.titulo,
+                'descripcion':x.descripcion,
+                'fechaFin':str(x.fechaFin),
+                'fechaAlta':str(x.fechaAlta)
+            }
+        return {'avisos': list(map(lambda x: to_json(x), AvisoModel.query.all()))}
+
     
 

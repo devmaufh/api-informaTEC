@@ -38,3 +38,6 @@ class InsertAviso(Resource):
             return {'message' : 'Something went wrong'}, 500
             
         
+class AllAvisos(Resource):
+    def get(self):
+        return AvisoModel.return_all()

@@ -33,6 +33,8 @@ class UserRegistration(Resource):
 
 class CheckUser(Resource):
     def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('usrId',help='usrId missing', required=True)
         data = parser.parse_args()
         if(not UserModel.find_by_username(data['usrId'])):
             return {'message': 'No existe el usuario', 'status': False}

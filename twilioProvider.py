@@ -13,4 +13,3 @@ class TwilioProvider():
                      to='+524612180322')
         return message.sid
         
-TwilioProvider().send_messagge()

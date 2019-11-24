@@ -77,15 +77,14 @@ class UserLogin(Resource):
 class UserUpdate(Resource):
     #@jwt_required #Uncomment this line to disable JSON WEB TOKEN Auth.
     def post(self):
+        parser.add_argument('usrId',help='usrId missing', required=True)
+        parser.add_argument('pwd',help='pwd missing', required=True)
         data = parser.parse_args()
-        current = UserModel.find_by_username(data['username'])
+        current = UserModel.find_by_username(data['usrId'])
         if (not current):
             return {'message': 'User doesnt exists'}
         try:
-            current.telefono = data['telefono']
-            current.id_tipo = data['id_tipo']
-            current.password = UserModel.generate_hash(data['password'])
-            current.nombre = data['nombre']
+            current.pwd = UserModel.generate_hash(data['pwd'])
             current.save_to_db()            
             return {'message': 'user updated'}
         except:

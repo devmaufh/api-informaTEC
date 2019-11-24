@@ -8,7 +8,7 @@ api = Api(app)
 app.config['UPLOAD_FOLDER'] = 'images'
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/avisos'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://informatec@informatec:Mauricio1361317@informatec.mysql.database.azure.com/avisos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'advices'
 app.config['JWT_SECRET_KEY'] = 'tok_avisos_merife'

@@ -36,7 +36,7 @@ class InsertAviso(Resource):
             aviso_model.save_to_db()
             titulo = "Tienes un nuevo aviso"
             if (data['prioridad'] == "1"):
-                titulo "Aviso prioritario"
+                titulo = "Aviso prioritario"
             url = "https://fcm.googleapis.com/fcm/send"
             data_to_send = {"to":"/topics/all","notification":{"title": titulo,"body":data['titulo']}}
             auth_head = {"Authorization": "key=AAAAQLWUJi0:APA91bFouaJIsigELqjh-CIzVVzKI3snTkXNvcMIgVC6_wJ9p56w3YK4Gxa-xG6xAzv7Bri3EerYjztbW9lo31ZW0z5kYvax6Iy_TmSR74NXiJW0oe7x3gkeAMSy1agg1s5K3iPZUjaZ","Content-Type" : "application/json"}
